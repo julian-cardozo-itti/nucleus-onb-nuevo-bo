@@ -31,3 +31,7 @@ lerna-debug.log*
 
 # Archivos de caché de PostCSS
 .cache/
+
+# SonarQube
+.scannerwork/
+.sonar/
