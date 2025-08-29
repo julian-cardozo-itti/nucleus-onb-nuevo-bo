@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .phase-item.active .phase-number {
+        @apply bg-blue-600 text-white scale-110;
+    }
+    .phase-item.active p {
+        @apply text-blue-600 font-bold;
+    }
+    .phase-line {
+        @apply absolute top-5 left-0 w-full h-1 bg-gray-200;
+    }
+    .phase-item {
+        z-index: 10;
+    }
+}
