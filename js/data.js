@@ -1,67 +1,81 @@
 const journeyData = [
     {
-        phase: "Inicio y Presentación",
-        details: "El representante del proyecto contacta a Nucleus. Se realiza una reunión introductoria y se comparte la documentación inicial sobre la plataforma y sus requerimientos.",
-        actors: ["Representante del Proyecto", "Designado de Nucleus"],
-        tools: ["Reuniones", "Documentación Oficial"],
-        clientActions: ["Realizar contacto inicial", "Asistir a la reunión", "Revisar documentación"],
-        nucleusActions: ["Presentar visión general de Nucleus", "Compartir documentación relevante"],
-        emotion: "Expectativa e Incertidumbre",
-        emotionValue: 3,
-        time: "1-3 días",
-        delays: ["Dificultad para coordinar agendas", "Documentación inicial poco clara"],
-        risks: ["Malentendido inicial de la arquitectura (iFrames)", "Expectativas no alineadas"]
-    },
-    {
-        phase: "Definición y Preparación",
-        details: "Se recolectan los requisitos detallados del proyecto y se establece un canal de Slack para la comunicación y el soporte durante el proceso.",
-        actors: ["Representante del Proyecto", "Designado de Nucleus"],
-        tools: ["Reuniones de seguimiento", "Slack"],
-        clientActions: ["Proporcionar requisitos detallados", "Confirmar compatibilidad con iFrame", "Asegurar configuración de CORS/CSP"],
-        nucleusActions: ["Realizar seguimiento de requerimientos", "Evaluar compatibilidad técnica", "Crear canal de Slack"],
-        emotion: "Colaboración y Comprensión",
+        phase: "Fase 1: Contacto Inicial y Evaluación",
+        details: "El Representante del Proyecto (RP) inicia el proceso para integrar un nuevo proyecto. El Representante de Nucleus (RN) recibe la solicitud, entrega documentación y evalúa el proyecto.",
+        actors: ["Representante del Proyecto (RP)", "Representante de Nucleus (RN)"],
+        tools: ["Email", "Reuniones", "Documentación"],
+        clientActions: [
+            "Iniciar el proceso solicitando integrar un nuevo proyecto a Nucleus.",
+            "Proporcionar los datos del proyecto para que sea evaluado."
+        ],
+        nucleusActions: [
+            "Recibir la solicitud, realizar una llamada y entregar la documentación inicial.",
+            "Recibir los datos del proyecto, evaluarlos y comunicar la aprobación o feedback al RP."
+        ],
+        emotion: "Expectativa",
         emotionValue: 4,
-        time: "1-2 semanas",
-        delays: ["Requisitos incompletos o cambiantes", "Dificultad para alinear requisitos de seguridad"],
-        risks: ["Incompatibilidad técnica con la arquitectura de Nucleus", "Retrasos por validación de requisitos"]
+        time: "2-4 días",
+        delays: ["Falta de información del proyecto.", "Demora en la evaluación."],
+        risks: ["Expectativas no alineadas.", "Información incompleta del proyecto."]
     },
     {
-        phase: "Configuración de Acceso",
-        details: "El equipo de Nucleus configura el proyecto en Nucleus Manager y gestiona la creación de roles en Okta. El cliente solicita la asignación de usuarios a dichos roles.",
-        actors: ["Equipo Nucleus", "Representante del Proyecto", "Equipo de Okta"],
-        tools: ["Nucleus Manager", "Okta", "Sistema de Tickets"],
-        clientActions: ["Solicitar formalmente la asignación de usuarios a los roles definidos"],
-        nucleusActions: ["Configurar proyecto en Nucleus Manager", "Gestionar creación de roles en Okta"],
-        emotion: "Dependencia y Espera",
-        emotionValue: 2,
-        time: "1 semana",
-        delays: ["Errores en la carga de datos", "Demoras en la gestión de roles o tickets por parte de Okta"],
-        risks: ["Usuarios sin los accesos correctos o a tiempo", "Fallos de seguridad por configuración incorrecta de roles"]
-    },
-    {
-        phase: "Implementación y Testing",
-        details: "El equipo del proyecto implementa la integración usando el SDK de Nucleus y realiza pruebas exhaustivas para asegurar el correcto funcionamiento y la comunicación segura.",
-        actors: ["Equipo de la Aplicación (Cliente)", "Equipo Nucleus (Soporte)"],
-        tools: ["SDK de Nucleus (NPM)", "Documentación del SDK", "Slack"],
-        clientActions: ["Desarrollar la integración", "Configurar CORS y sesiones", "Alinear diseño con guías de Nucleus", "Realizar pruebas unitarias y de integración"],
-        nucleusActions: ["Proporcionar SDK y documentación", "Dar soporte técnico activo", "Alinear diseños con Producto"],
-        emotion: "Desafío y Aprendizaje",
-        emotionValue: 3,
-        time: "2-4 semanas",
-        delays: ["Problemas de compatibilidad del SDK", "Curva de aprendizaje del SDK y postMessage", "Dificultades con iFrames y políticas CSP"],
-        risks: ["Bloqueo técnico por problemas con el SDK", "Experiencia de usuario inconsistente", "Vulnerabilidades de seguridad"]
-    },
-    {
-        phase: "Soporte y Continuidad",
-        details: "Nucleus proporciona soporte técnico continuo. Se utiliza el feedback del proyecto para identificar puntos de dolor y mejorar la plataforma para futuras integraciones.",
-        actors: ["Equipo de la Aplicación", "Equipo Nucleus"],
-        tools: ["Canal de Slack", "Documentación", "Jira Service Management (futuro)"],
-        clientActions: ["Reportar incidencias", "Solicitar soporte", "Proporcionar feedback sobre la experiencia"],
-        nucleusActions: ["Resolver incidencias", "Actualizar documentación", "Considerar feedback para mejoras"],
-        emotion: "Confianza y Colaboración",
+        phase: "Fase 2: Configuración del Entorno",
+        details: "El RN crea un canal de Slack y registra el proyecto en Nucleus. El RP se une al canal y envía los datos necesarios para el registro.",
+        actors: ["Representante del Proyecto (RP)", "Representante de Nucleus (RN)"],
+        tools: ["Slack", "Sistema de Nucleus"],
+        clientActions: [
+            "Unirse al canal de Slack.",
+            "Enviar los datos necesarios para el registro (nombre del Tenant, roles, usuarios iniciales, etc.)."
+        ],
+        nucleusActions: [
+            "Crear un canal de comunicación en Slack.",
+            "Invitar al equipo del proyecto al canal.",
+            "Registrar el Proyecto/Tenant en el sistema de Nucleus.",
+            "Confirmar al RP que el proyecto ha sido creado."
+        ],
+        emotion: "Colaboración",
         emotionValue: 5,
-        time: "Continuo",
-        delays: ["Tiempos de respuesta lentos del soporte", "Falta de claridad en procesos o documentación"],
-        risks: ["Problemas no resueltos que afectan la operación", "Insatisfacción del cliente por soporte ineficaz"]
+        time: "1-2 días",
+        delays: ["Datos de registro incorrectos o incompletos."],
+        risks: ["Errores en la configuración inicial del Tenant."]
+    },
+    {
+        phase: "Fase 3: Gestión de Accesos y Roles (Usuarios ITTI)",
+        details: "El RN solicita la creación de grupos de seguridad en Okta. El Representante de Okta (RO) crea los grupos, asigna usuarios y confirma al RN, quien notifica al RP.",
+        actors: ["Representante de Nucleus (RN)", "Representante de Okta (RO)", "Representante del Proyecto (RP)"],
+        tools: ["Okta", "Sistema de Tickets/Email"],
+        clientActions: [
+            "Recibir notificación de accesos creados."
+        ],
+        nucleusActions: [
+            "Solicitar al equipo de Okta la creación de los grupos de seguridad necesarios.",
+            "Recibir la confirmación de Okta.",
+            "Notificar al RP que los usuarios ya tienen acceso."
+        ],
+        emotion: "Dependencia",
+        emotionValue: 3,
+        time: "3-5 días",
+        delays: ["Demora en la creación de grupos en Okta."],
+        risks: ["Configuración incorrecta de roles y permisos."]
+    },
+    {
+        phase: "Fase 4: Alta de Usuarios Externos",
+        details: "Para usuarios externos, el RN facilita una reunión entre el RP y Okta. El RO crea la cuenta tras recibir la justificación directamente del RP.",
+        actors: ["Representante del Proyecto (RP)", "Representante de Nucleus (RN)", "Representante de Okta (RO)"],
+        tools: ["Reuniones", "Okta"],
+        clientActions: [
+            "Solicitar el alta de un usuario externo.",
+            "Proporcionar detalles y justificación del acceso en la reunión de coordinación."
+        ],
+        nucleusActions: [
+            "Recibir la solicitud y organizar la reunión de coordinación.",
+            "Una vez creada la cuenta por Okta, asignar los roles correspondientes.",
+            "Notificar al RP que el usuario externo ha sido creado y tiene acceso."
+        ],
+        emotion: "Coordinación",
+        emotionValue: 4,
+        time: "4-6 días",
+        delays: ["Dificultad para coordinar agendas para la reunión."],
+        risks: ["Falta de justificación para el acceso del usuario externo."]
     }
 ];

@@ -108,14 +108,6 @@ function createChecklistCard(title, actions, iconType, phaseIndex, taskCategory)
                 if (window.currentProject) {
                     window.currentProject.tasks[`phase${phaseIndex}`][taskCategory][actionIndex] = checkbox.checked;
                     saveProjects();
-
-                    // Disparar correo para la primera tarea de la primera fase
-                    if (phaseIndex === 0 && taskCategory === 'clientActions' && actionIndex === 0 && checkbox.checked) {
-                        const projectName = window.currentProject.name;
-                        const subject = `Inicio del Onboarding: ${projectName}`;
-                        const body = `Hola equipo,\n\nEste es el correo de bienvenida para el onboarding del proyecto "${projectName}" a la plataforma Nucleus.\n\nNos gustaría coordinar una reunión inicial para presentar la plataforma y discutir los próximos pasos.\n\nSaludos,\nEl equipo de Nucleus`;
-                        window.location.href = `mailto:destinatario@example.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                    }
                 }
             });
 
