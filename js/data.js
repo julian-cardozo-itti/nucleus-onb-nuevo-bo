@@ -31,6 +31,10 @@ const journeyData = [
             label: "Acceder al Formulario de Registro de Proyecto",
             url: "https://docs.google.com/forms/d/e/1FAIpQLSczJSc5YlylS4tEnlN3I4HBr9uhhL_FIt-zXRQf6o8Sj9xbTg/viewform"
         },
+        technicalDocLink: {
+            label: "Acceder a la Documentación Técnica de Nucleus",
+            url: "https://drive.google.com/drive/folders/12BylDITLd4GlyA3C8ZguaU2tg4QOF1ch"
+        },
         clientActions: [
             "Unirse al canal de Slack.",
             "Enviar los datos necesarios para el registro a través del formulario de registro de proyecto (nombre del Tenant, roles, usuarios iniciales, etc.)."
