@@ -39,6 +39,18 @@ function loadProjects() {
     }
 }
 
+function deleteProject(index) {
+    if (confirm("¿Estás seguro de que quieres eliminar este proyecto?")) {
+        projects.splice(index, 1);
+        saveProjects();
+        renderProjects();
+        // Si el proyecto eliminado era el que estaba en vista, volver al dashboard
+        if (window.currentProject === null || !projects.find(p => p === window.currentProject)) {
+            showDashboardView();
+        }
+    }
+}
+
 function createIcon(type) {
     const icons = {
         actors: '👥', tools: '🔧', client: '▶️', nucleus: '⚙️',
@@ -436,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
             projectsTableBody.appendChild(row);
             return;
         }
-        projects.forEach((project) => {
+        projects.forEach((project, index) => {
             const row = document.createElement('tr');
             row.className = 'cursor-pointer hover:bg-gray-50';
             row.innerHTML = `
@@ -451,10 +463,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <a href="#" class="text-blue-600 hover:text-blue-900">Ver Journey</a>
+                    <a href="#" class="text-blue-600 hover:text-blue-900 mr-4">Ver Journey</a>
+                    <button data-project-index="${index}" class="delete-project-button text-red-600 hover:text-red-900">Eliminar</button>
                 </td>
             `;
-            row.addEventListener('click', () => {
+            row.addEventListener('click', (event) => {
+                // Prevenir que el click en el botón de eliminar active la vista del journey
+                if (event.target.classList.contains('delete-project-button')) {
+                    const projectIndex = parseInt(event.target.dataset.projectIndex);
+                    deleteProject(projectIndex);
+                    return;
+                }
                 showJourneyView(project);
                 // Asegurarse de que la fase activa se actualice y los detalles se rendericen correctamente
                 updateActivePhase(project);
