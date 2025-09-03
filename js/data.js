@@ -27,6 +27,10 @@ const journeyData = [
         details: "El RN crea un canal de Slack y registra el proyecto en Nucleus. El RP se une al canal y envía los datos necesarios para el registro.",
         actors: ["Representante del Proyecto (RP)", "Representante de Nucleus (RN)"],
         tools: ["Slack", "Sistema de Nucleus"],
+        formLink: {
+            label: "Acceder al Formulario de Registro de Proyecto",
+            url: "https://docs.google.com/forms/d/e/1FAIpQLSczJSc5YlylS4tEnlN3I4HBr9uhhL_FIt-zXRQf6o8Sj9xbTg/viewform"
+        },
         clientActions: [
             "Unirse al canal de Slack.",
             "Enviar los datos necesarios para el registro (nombre del Tenant, roles, usuarios iniciales, etc.)."
