@@ -8,6 +8,10 @@ const journeyData = [
             "Iniciar el proceso solicitando integrar un nuevo proyecto a Nucleus.",
             "Proporcionar los datos del proyecto para que sea evaluado."
         ],
+        documentationLink: {
+            label: "Acceder a la Documentación de Nucleus",
+            url: "https://drive.google.com/drive/folders/1i64-S8OXvAJ-DglfjSiw-6cBskWmBHGH" // Placeholder URL
+        },
         nucleusActions: [
             "Recibir la solicitud, realizar una llamada y entregar la documentación inicial.",
             "Recibir los datos del proyecto, evaluarlos y comunicar la aprobación o feedback al RP."

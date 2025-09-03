@@ -144,6 +144,21 @@ function renderPhaseDetails(index) {
     `;
     detailsSection.appendChild(header);
 
+    // Enlace a la documentación si existe
+    if (phaseData.documentationLink) {
+        const docLinkDiv = document.createElement('div');
+        docLinkDiv.className = 'mt-4 mb-6 text-center';
+        docLinkDiv.innerHTML = `
+            <a href="${phaseData.documentationLink.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5 8a2 2 0 012-2h4a2 2 0 012 2v2a2 2 0 01-2 2H7a2 2 0 01-2-2V8zm1-3a1 1 0 00-1 1v5a1 1 0 001 1h8a1 1 0 001-1V6a1 1 0 00-1-1H6z" clip-rule="evenodd" />
+                </svg>
+                ${phaseData.documentationLink.label}
+            </a>
+        `;
+        detailsSection.appendChild(docLinkDiv);
+    }
+
     // Sección de Comentarios
     const commentsSection = document.createElement('div');
     commentsSection.className = 'mb-6';
