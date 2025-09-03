@@ -33,7 +33,7 @@ const journeyData = [
         },
         clientActions: [
             "Unirse al canal de Slack.",
-            "Enviar los datos necesarios para el registro (nombre del Tenant, roles, usuarios iniciales, etc.)."
+            "Enviar los datos necesarios para el registro a través del formulario de registro de proyecto (nombre del Tenant, roles, usuarios iniciales, etc.)."
         ],
         nucleusActions: [
             "Crear un canal de comunicación en Slack.",
