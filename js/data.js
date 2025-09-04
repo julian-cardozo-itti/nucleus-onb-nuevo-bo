@@ -6,27 +6,28 @@ const journeyData = [
         tools: ["Email", "Reuniones", "Documentación"],
         clientActions: [
             "Iniciar el proceso solicitando integrar un nuevo proyecto a Nucleus.",
-            "Proporcionar los datos del proyecto para que sea evaluado."
+            "Conectar las cuentas de AWS (TransitGateway) con la cuenta de Nucleus.",
+            "SolicitarPersonal Access Token (PAT) para github organization."
         ],
         documentationLink: {
             label: "Acceder a la Documentación de Nucleus",
             url: "https://drive.google.com/drive/folders/1i64-S8OXvAJ-DglfjSiw-6cBskWmBHGH" // Placeholder URL
         },
         nucleusActions: [
-            "Recibir la solicitud, realizar una llamada y entregar la documentación inicial.",
-            "Recibir los datos del proyecto, evaluarlos y comunicar la aprobación o feedback al RP."
+            "Compartir la documentación inicial con el RP.",
+            "Evaluar el proyecto y comunicar la aprobación o feedback al RP."
         ],
         emotion: "Expectativa",
         emotionValue: 4,
         time: "2-4 días",
-        delays: ["Falta de información del proyecto.", "Demora en la evaluación."],
+        tools: ["Conectar las cuentas a traves de un ticket a cloudOps (infra)","Ticket a gestion de accesos para solicitar el PAT"],
         risks: ["Expectativas no alineadas.", "Información incompleta del proyecto."]
     },
     {
         phase: "Fase 2: Configuración del Entorno",
-        details: "El RN crea un canal de Slack y registra el proyecto en Nucleus. El RP se une al canal y envía los datos necesarios para el registro.",
+        details: "El RN crea registra el proyecto en Nucleus. El RP completa el formulario de registro de proyecto.",
         actors: ["Representante del Proyecto (RP)", "Representante de Nucleus (RN)"],
-        tools: ["Slack", "Sistema de Nucleus"],
+        tools: ["Slack", "Nucleus", "Google Forms"],
         formLink: {
             label: "Acceder al Formulario de Registro de Proyecto",
             url: "https://docs.google.com/forms/d/e/1FAIpQLSczJSc5YlylS4tEnlN3I4HBr9uhhL_FIt-zXRQf6o8Sj9xbTg/viewform"
@@ -40,9 +41,9 @@ const journeyData = [
             "Enviar los datos necesarios para el registro a través del formulario de registro de proyecto (nombre del Tenant, roles, usuarios iniciales, etc.)."
         ],
         nucleusActions: [
-            "Crear un canal de comunicación en Slack.",
-            "Invitar al equipo del proyecto al canal.",
-            "Registrar el Proyecto/Tenant en el sistema de Nucleus.",
+            "Agregar en caso oportuno un canal de comunicación en Slack.",
+            "Invitar al equipo del proyecto al canal de comunicación.",
+            "Registrar el Proyecto/Tenant en Nucleus.",
             "Confirmar al RP que el proyecto ha sido creado."
         ],
         emotion: "Colaboración",
