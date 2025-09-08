@@ -1,4 +1,4 @@
-const journeyData = [
+export const journeyData = [
     {
         phase: "Fase 1: Contacto Inicial y Evaluación",
         details: "El Representante del Proyecto (RP) inicia el proceso para integrar un nuevo proyecto. El Representante de Nucleus (RN) recibe la solicitud, entrega documentación y evalúa el proyecto.",
@@ -38,7 +38,7 @@ const journeyData = [
         },
         clientActions: [
             "Unirse al canal de Slack.",
-            "Enviar los datos necesarios para el registro a través del formulario de registro de proyecto (nombre del Tenant, roles, usuarios iniciales, etc.)."
+            "Enviar los datos necesarios para el registro a través del formulario."
         ],
         nucleusActions: [
             "Agregar en caso oportuno un canal de comunicación en Slack.",
