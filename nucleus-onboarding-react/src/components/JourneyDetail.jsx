@@ -122,6 +122,7 @@ function ChecklistCard({ title, actions, iconType, phaseIndex, taskCategory, pro
   };
 
   const oktaGroupsLink = journeyData[phaseIndex]?.oktaGroupsLink; // Obtener el enlace de Okta de los datos de la fase
+  const patRequestLink = journeyData[phaseIndex]?.patRequestLink; // Obtener el enlace de solicitud de PAT
 
   return (
     <Card elevation={2} sx={{ borderRadius: '8px', height: '100%' }}>
@@ -161,6 +162,18 @@ function ChecklistCard({ title, actions, iconType, phaseIndex, taskCategory, pro
                         size="small"
                         component={MuiLink}
                         href={oktaGroupsLink.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{ ml: 1, p: 0.5 }}
+                      >
+                        <LinkIcon fontSize="small" />
+                      </IconButton>
+                    )}
+                    {actionText === "SolicitarPersonal Access Token (PAT) para github organization." && patRequestLink && (
+                      <IconButton
+                        size="small"
+                        component={MuiLink}
+                        href={patRequestLink.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         sx={{ ml: 1, p: 0.5 }}
@@ -331,7 +344,7 @@ function JourneyDetail({ project, saveProjects, setCurrentProject }) {
             <Box
               sx={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                bgcolor: 'primary.light', color: 'primary.dark', fontSize: '0.875rem',
+                bgcolor: 'primary.light', textColor: '#FFFFFF', color: 'primary.dark', fontSize: '0.875rem',
                 fontWeight: 'medium', px: 2, py: 0.5, borderRadius: '9999px'
               }}
             >

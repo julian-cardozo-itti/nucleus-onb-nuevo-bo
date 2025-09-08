@@ -21,7 +21,11 @@ export const journeyData = [
         emotionValue: 4,
         time: "2-4 días",
         tools: ["Conectar las cuentas a traves de un ticket a cloudOps (infra)","Ticket a gestion de accesos para solicitar el PAT"],
-        risks: ["Expectativas no alineadas.", "Información incompleta del proyecto."]
+        risks: ["Expectativas no alineadas.", "Información incompleta del proyecto."],
+        patRequestLink: {
+            label: "Solicitar Personal Access Token (PAT) para GitHub",
+            url: "https://itti-digital.atlassian.net/wiki/spaces/ITTIPlatform/pages/142369062938/Github+-+Cuenta+gen+rica+para+PAT"
+        }
     },
     {
         phase: "Fase 2: Configuración del Entorno",
@@ -37,7 +41,7 @@ export const journeyData = [
             url: "https://drive.google.com/drive/folders/12BylDITLd4GlyA3C8ZguaU2tg4QOF1ch"
         },
         clientActions: [
-            "Unirse al canal de Slack.",
+            "Unirse al canal de Slack. #nucleus-onboarding-general.",
             "Enviar los datos necesarios para el registro a través del formulario."
         ],
         nucleusActions: [
