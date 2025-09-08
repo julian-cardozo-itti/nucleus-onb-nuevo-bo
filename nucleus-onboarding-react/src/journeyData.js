@@ -69,7 +69,11 @@ export const journeyData = [
         emotionValue: 3,
         time: "3-5 días",
         delays: ["Demora en la creación de grupos en Okta."],
-        risks: ["Configuración incorrecta de roles y permisos."]
+        risks: ["Configuración incorrecta de roles y permisos."],
+        oktaGroupsLink: {
+            label: "Hoja de Cálculo de Solicitud de Grupos Okta",
+            url: "https://docs.google.com/spreadsheets/d/1hbWh2bVAqYF4KWmwnuaxPR64UFPWo3JROA6ZOaZILtI/edit?gid=386655764#gid=386655764"
+        }
     },
     {
         phase: "Fase 4: Alta de Usuarios Externos",

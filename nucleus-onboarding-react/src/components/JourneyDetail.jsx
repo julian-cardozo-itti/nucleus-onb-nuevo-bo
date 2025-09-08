@@ -3,9 +3,9 @@ import {
   Box, Typography, Paper, Grid, Button, Link as MuiLink,
   TextField, Checkbox, FormControlLabel, Stepper, Step, StepLabel,
   Card, CardContent, CardHeader, Accordion, AccordionSummary, AccordionDetails,
-  List, ListItem, ListItemIcon, ListItemText // Importar componentes de lista
+  List, ListItem, ListItemIcon, ListItemText, IconButton // Importar componentes de lista
 } from '@mui/material';
-import { ExpandMore as ExpandMoreIcon, Description as DescriptionIcon, Assignment as AssignmentIcon, Code as CodeIcon } from '@mui/icons-material'; // Importar iconos correctos
+import { ExpandMore as ExpandMoreIcon, Description as DescriptionIcon, Assignment as AssignmentIcon, Code as CodeIcon, Link as LinkIcon } from '@mui/icons-material'; // Importar iconos correctos
 import { useTheme } from '@mui/material/styles'; // Importar useTheme
 import Chart from 'chart.js/auto';
 import { journeyData } from '../journeyData';
@@ -121,6 +121,8 @@ function ChecklistCard({ title, actions, iconType, phaseIndex, taskCategory, pro
     return project?.tasks?.[`phase${phaseIndex}`]?.[taskCategory]?.[actionIndex] || false;
   };
 
+  const oktaGroupsLink = journeyData[phaseIndex]?.oktaGroupsLink; // Obtener el enlace de Okta de los datos de la fase
+
   return (
     <Card elevation={2} sx={{ borderRadius: '8px', height: '100%' }}>
       <CardHeader
@@ -150,7 +152,25 @@ function ChecklistCard({ title, actions, iconType, phaseIndex, taskCategory, pro
                   size="small"
                 />
               </ListItemIcon>
-              <ListItemText primary={<Typography variant="body2">{actionText}</Typography>} />
+              <ListItemText
+                primary={
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Typography variant="body2">{actionText}</Typography>
+                    {actionText === "Solicitar al equipo de Okta la creación de los grupos de seguridad necesarios." && oktaGroupsLink && (
+                      <IconButton
+                        size="small"
+                        component={MuiLink}
+                        href={oktaGroupsLink.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{ ml: 1, p: 0.5 }}
+                      >
+                        <LinkIcon fontSize="small" />
+                      </IconButton>
+                    )}
+                  </Box>
+                }
+              />
             </ListItem>
           ))}
         </List>
