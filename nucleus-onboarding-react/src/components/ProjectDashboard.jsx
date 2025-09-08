@@ -1,182 +1,199 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
-  Button, TextField, Box, Typography, IconButton, Input,
-  Paper, Chip
-} from '@mui/material';
+  Box, Button, TextField, Paper, Typography, Grid, IconButton, Chip,
+  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Alert
+} from "@mui/material";
+import {
+  Delete as DeleteIcon, Visibility as VisibilityIcon,
+  Download as DownloadIcon, UploadFile as UploadFileIcon, Add as AddIcon
+} from "@mui/icons-material";
 import { DataGrid } from '@mui/x-data-grid';
-import { Delete as DeleteIcon, Visibility as VisibilityIcon, Download as DownloadIcon, UploadFile as UploadFileIcon, Add as AddIcon } from '@mui/icons-material'; // Importar los iconos correctos
-import { journeyData } from '../journeyData';
+import * as locales from '@mui/x-data-grid/locales';
+import { journeyData } from "../journeyData";
 
 function ProjectDashboard({ projects, saveProjects, setCurrentProject }) {
-  const [newProjectName, setNewProjectName] = useState('');
+  const [newProjectName, setNewProjectName] = useState("");
+  const [deleteConfirmation, setDeleteConfirmation] = useState({ open: false, projectId: null });
+  const [notification, setNotification] = useState({ open: false, message: '', severity: 'success' });
+  const importFileRef = useRef(null);
 
-  const handleAddProject = (e) => {
-    e.preventDefault();
-    if (newProjectName.trim()) {
-      const newProject = {
-        id: Date.now(),
-        name: newProjectName.trim(),
-        currentPhase: 0,
-        tasks: {},
-        comments: {}
-      };
-
-      journeyData.forEach((phase, index) => {
-        newProject.tasks[`phase${index}`] = {
-          clientActions: phase.clientActions.map(() => false),
-          nucleusActions: phase.nucleusActions.map(() => false)
-        };
-        newProject.comments[`phase${index}`] = '';
-      });
-
-      const updatedProjects = [...projects, newProject];
-      saveProjects(updatedProjects);
-      setNewProjectName('');
-      setCurrentProject(newProject);
+  const handleAddProject = () => {
+    if (newProjectName.trim() === "") {
+      setNotification({ open: true, message: 'El nombre del proyecto no puede estar vacío.', severity: 'error' });
+      return;
     }
+    const newProject = {
+      id: Date.now(),
+      name: newProjectName,
+      currentPhase: 0,
+      tasks: {},
+      comments: {}
+    };
+    const updatedProjects = [...projects, newProject];
+    saveProjects(updatedProjects);
+    setNewProjectName("");
+    setNotification({ open: true, message: `Proyecto "${newProjectName}" añadido con éxito.`, severity: 'success' });
   };
 
-  const handleDeleteProject = (idToDelete) => {
-    if (window.confirm("¿Estás seguro de que quieres eliminar este proyecto?")) {
-      const updatedProjects = projects.filter(project => project.id !== idToDelete);
-      saveProjects(updatedProjects);
-      if (currentProject && !updatedProjects.some(p => p.id === currentProject.id)) {
-        setCurrentProject(null);
-      }
-    }
+  const handleDeleteProject = (id) => {
+    const updatedProjects = projects.filter(p => p.id !== id);
+    saveProjects(updatedProjects);
+    setDeleteConfirmation({ open: false, projectId: null });
+    setNotification({ open: true, message: 'Proyecto eliminado con éxito.', severity: 'success' });
   };
 
-  const exportProjects = () => {
+  const handleExportProjects = () => {
+    if (projects.length === 0) {
+      setNotification({ open: true, message: 'No hay proyectos para exportar.', severity: 'warning' });
+      return;
+    }
     const dataStr = JSON.stringify(projects, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-    const exportFileDefaultName = 'nucleus_onboarding_projects.json';
+    const exportFileDefaultName = 'onboarding_projects.json';
 
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
     linkElement.click();
+    setNotification({ open: true, message: 'La exportación ha comenzado.', severity: 'success' });
   };
 
-  const importProjects = (event) => {
+  const handleImportClick = () => {
+    importFileRef.current.click();
+  };
+
+  const handleImportProjects = (event) => {
     const file = event.target.files[0];
-    if (!file) {
-      return;
-    }
+    if (!file) return;
 
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
         const importedProjects = JSON.parse(e.target.result);
-        if (Array.isArray(importedProjects) && importedProjects.every(p => p.name && p.currentPhase !== undefined)) {
-          importedProjects.forEach(project => {
-            if (!project.id) project.id = Date.now() + Math.random();
-            if (project.currentPhase < 0 || project.currentPhase >= journeyData.length) {
-              project.currentPhase = 0;
-            }
-          });
+        if (Array.isArray(importedProjects)) {
           saveProjects(importedProjects);
-          alert('Proyectos importados exitosamente!');
+          setNotification({ open: true, message: 'Proyectos importados con éxito.', severity: 'success' });
         } else {
-          alert('El archivo JSON no contiene un formato de proyectos válido.');
+          setNotification({ open: true, message: 'El archivo no tiene un formato válido.', severity: 'error' });
         }
       } catch (error) {
-        alert('Error al parsear el archivo JSON. Asegúrate de que es un JSON válido.');
-        console.error('Error al importar proyectos:', error);
+        console.error("Error al importar:", error);
+        setNotification({ open: true, message: 'Error al leer el archivo JSON.', severity: 'error' });
       }
     };
     reader.readAsText(file);
+    event.target.value = null; // Limpiar el input
+  };
+
+  const handleViewProject = (project) => {
+    setCurrentProject(project);
   };
 
   const columns = [
-    { field: 'name', headerName: 'Nombre del Proyecto', flex: 1, minWidth: 200 },
+    { field: 'name', headerName: 'Nombre del Proyecto', flex: 1 },
     {
       field: 'currentPhase',
       headerName: 'Fase Actual',
-      width: 200,
+      flex: 1,
       renderCell: (params) => {
-        const phase = journeyData[params.value];
-        return phase ? (
-          <Chip label={phase.phase} color="primary" size="small" variant="outlined" />
-        ) : (
-          <Chip label="Fase Desconocida" color="default" size="small" variant="outlined" />
-        );
+        const phaseName = journeyData[params.value]?.phase || 'Fase Desconocida';
+        return <Chip label={phaseName} variant="outlined" />;
       },
     },
     {
       field: 'actions',
       headerName: 'Acciones',
-      width: 120,
       sortable: false,
-      filterable: false,
+      width: 150,
       renderCell: (params) => (
-        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-          <IconButton aria-label="ver" onClick={() => setCurrentProject(params.row)} color="primary" size="small">
+        <>
+          <IconButton onClick={() => handleViewProject(params.row)} color="primary">
             <VisibilityIcon />
           </IconButton>
-          <IconButton aria-label="eliminar" onClick={() => handleDeleteProject(params.row.id)} color="error" size="small">
+          <IconButton onClick={() => setDeleteConfirmation({ open: true, projectId: params.row.id })} color="error">
             <DeleteIcon />
           </IconButton>
-        </Box>
+        </>
       ),
     },
   ];
 
   return (
     <Box sx={{ mt: 4 }}>
-      <Typography variant="h4" component="h2" gutterBottom>
-        Gestión de Proyectos
-      </Typography>
+      {notification.open && (
+        <Alert
+          severity={notification.severity}
+          onClose={() => setNotification({ ...notification, open: false })}
+          sx={{ mb: 2 }}
+        >
+          {notification.message}
+        </Alert>
+      )}
 
-      <Box sx={{ mb: 4, p: 3, bgcolor: 'background.paper', borderRadius: '8px', boxShadow: 1 }}>
-        <Typography variant="h6" component="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
-          Añadir Nuevo Proyecto
-        </Typography>
-        <Box component="form" onSubmit={handleAddProject} sx={{ display: 'flex', gap: 2 }}>
-          <TextField
-            label="Nombre del Proyecto"
-            variant="outlined"
-            value={newProjectName}
-            onChange={(e) => setNewProjectName(e.target.value)}
-            fullWidth
-            size="small"
-          />
-          <Button type="submit" variant="contained" color="primary" startIcon={<AddIcon />}>
-            Añadir
-          </Button>
-        </Box>
-      </Box>
-
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mb: 2 }}>
-        <Button variant="outlined" onClick={exportProjects} startIcon={<DownloadIcon />}>
-          Exportar Proyectos
-        </Button>
-        <Input
-          type="file"
-          id="import-projects-input"
-          sx={{ display: 'none' }}
-          onChange={importProjects}
-        />
-        <label htmlFor="import-projects-input">
-          <Button variant="outlined" component="span" startIcon={<UploadFileIcon />}>
-            Importar Proyectos
-          </Button>
-        </label>
-      </Box>
-
-      <Paper sx={{ height: 400, width: '100%' }}>
-        <DataGrid
-          rows={projects}
-          columns={columns}
-          pageSizeOptions={[5, 10, 20]}
-          initialState={{
-            pagination: { paginationModel: { pageSize: 5 } },
-          }}
-          disableRowSelectionOnClick
-          localeText={{
-            noRowsLabel: "No hay proyectos activos. Añade uno para empezar.",
-          }}
-        />
+      <Paper elevation={2} sx={{ p: 4, mb: 4, borderRadius: '12px' }}>
+        <Typography variant="h6" component="h3" gutterBottom>Añadir Nuevo Proyecto</Typography>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={12} sm>
+            <TextField
+              fullWidth
+              label="Nombre del Nuevo Proyecto"
+              value={newProjectName}
+              onChange={(e) => setNewProjectName(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleAddProject()}
+            />
+          </Grid>
+          <Grid item xs={12} sm="auto">
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={handleAddProject}
+              size="large"
+            >
+              Añadir
+            </Button>
+          </Grid>
+        </Grid>
       </Paper>
+
+      <Paper elevation={2} sx={{ p: 4, borderRadius: '12px' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Typography variant="h6" component="h3">Proyectos Existentes</Typography>
+          <Box>
+            <Button variant="outlined" startIcon={<UploadFileIcon />} onClick={handleImportClick} sx={{ mr: 1 }}>
+              Importar
+            </Button>
+            <input type="file" ref={importFileRef} onChange={handleImportProjects} style={{ display: 'none' }} accept=".json" />
+            <Button variant="outlined" startIcon={<DownloadIcon />} onClick={handleExportProjects}>
+              Exportar
+            </Button>
+          </Box>
+        </Box>
+        <div style={{ height: 400, width: '100%' }}>
+          <DataGrid
+            rows={projects}
+            columns={columns}
+            localeText={locales.esES.components.MuiDataGrid.defaultProps.localeText}
+          />
+        </div>
+      </Paper>
+
+      <Dialog
+        open={deleteConfirmation.open}
+        onClose={() => setDeleteConfirmation({ open: false, projectId: null })}
+      >
+        <DialogTitle>Confirmar Eliminación</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            ¿Estás seguro de que quieres eliminar este proyecto? Esta acción no se puede deshacer.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteConfirmation({ open: false, projectId: null })}>Cancelar</Button>
+          <Button onClick={() => handleDeleteProject(deleteConfirmation.projectId)} color="error">
+            Eliminar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
